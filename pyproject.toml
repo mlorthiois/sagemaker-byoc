@@ -1,0 +1,13 @@
+[project]
+name = "sagemaker-byoc"
+version = "0.1.0"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  # Required
+  "setuptools==80.8.*",
+  "sagemaker-inference==1.10.*",
+  "multi-model-server==1.1.*"
+
+  # Custom
+]
