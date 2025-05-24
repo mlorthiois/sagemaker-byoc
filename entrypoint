@@ -1,10 +1,9 @@
+#!/usr/bin/env python3
+
 import subprocess
 from subprocess import CalledProcessError
-import service_handler
 from retrying import retry
 from sagemaker_inference import model_server
-
-HANDLER_SERVICE = service_handler.__file__ + ":HandlerService:handle"
 
 
 def _retry_if_error(exception):
@@ -16,13 +15,11 @@ def _start_mms():
     # by default the number of workers per model is 1, but we can configure it through the
     # environment variable below if desired.
     # os.environ['SAGEMAKER_MODEL_SERVER_WORKERS'] = '2'
-    print("Starting MMS -> running ", HANDLER_SERVICE)
-    model_server.start_model_server(handler_service=HANDLER_SERVICE)
+    model_server.start_model_server()
 
 
 def main():
     _start_mms()
-    # prevent docker exit
     subprocess.call(["tail", "-f", "/dev/null"])
 
 

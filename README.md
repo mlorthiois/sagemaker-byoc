@@ -4,20 +4,26 @@ This repository serves as a template for creating your Bring-Your-Own-Container 
 
 ## Customize
 
-The 2 primary functions you'll likely modify are located in [src/inference_handler.py](./src/inference_handler.py). 
+The 2 primary functions you'll likely modify are located in [src/inference.py](./src/inference.py). 
 
-- `default_model_fn`: This function is responsible for loading model artifacts stored in the `model_dir` directory (which contains the contents of your `model.tar.gz` file).
-- `default_predict_fn` This function has access to both data and models, and it executes your inference code.
+- `model_fn`: This function is responsible for loading model artifacts stored in the `model_dir` directory (which contains the contents of your `model.tar.gz` file).
+- `predict_fn` This function has access to both data and models, and it executes your inference code.
 
-In this template, `default_model_fn` loads two models (representing two functions that transform input data). 
-`default_predict_fn` then runs the transformation with both models and concatenates the results.
+In this template, `model_fn` loads two models (representing two functions that transform input data). 
+`predict_fn` then runs the transformation with both models and concatenates the results.
 
 You can modify `pyproject.toml` to add any other dependencies your project requires.
 
 ## Test
 
-First, populate `artefact/model` with your model artifacts. This directy will be mounted in 
+First, populate `artefact/` with your model artefacts. This directy will be mounted in 
 `model_dir` by default when the container runs. 
+
+In the Makefile, change the path to your artefact by modifying the up step, by default, it loads `example.joblib`:
+
+```Makefile
+--mount type=bind,src=./artefact/example.joblib,dst=/opt/ml/model/example.joblib \
+```
 
 Next, create and run the image with the following command:
 

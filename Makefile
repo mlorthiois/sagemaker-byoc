@@ -1,7 +1,12 @@
 up:
-	@docker build -t sagemaker-inference-base . && docker run -p 8080:8080 -v ./artefact:/opt/ml sagemaker-inference-base
+	@docker build -t sagemaker-inference-base . && \
+		docker run \
+			-p 8080:8080 \
+			--mount type=bind,src=./artefact/example.joblib,dst=/opt/ml/model/example.joblib \
+			-e SAGEMAKER_MODEL_SERVER_WORKERS=1 \
+			sagemaker-inference-base
 
-PAYLOAD = "tests/payload.json"
+PAYLOAD = "tests/payload_2.json"
 CONTENT_TYPE = application/json
 
 predict:

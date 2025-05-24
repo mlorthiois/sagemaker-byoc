@@ -2,7 +2,7 @@ FROM python:3.13-slim
 
 LABEL com.amazonaws.sagemaker.capabilities.accept-bind-to-port=true
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY pyproject.toml pyproject.toml
 
@@ -15,6 +15,7 @@ RUN apt-get update && \
       wget && \
     pip install --no-cache-dir .
 
-COPY src src
+COPY entrypoint .
+COPY src /opt/ml/model/code
 
-ENTRYPOINT ["python", "/usr/src/app/src/entrypoint.py"]
+ENTRYPOINT ["python", "/app/entrypoint"]
